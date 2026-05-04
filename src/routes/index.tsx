@@ -1,26 +1,279 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  Sparkles,
+  Database,
+  BarChart3,
+  Bot,
+  Boxes,
+  MessagesSquare,
+  Mail,
+  MessageCircle,
+  ArrowRight,
+  Check,
+  Zap,
+  Layers,
+  DollarSign,
+  Brain,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "CognoSales — Talk to your data. Sell smarter." },
+      { name: "description", content: "AI-native CRM, analytics, inventory, chatbot and marketing for modern dealerships. Ask your data anything — get answers, not dashboards." },
+      { property: "og:title", content: "CognoSales — Talk to your data. Sell smarter." },
+      { property: "og:description", content: "AI at the center. CRM, analytics, inventory, chatbot, email & SMS — one ecosystem, one price." },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+const tools = [
+  { icon: Database, title: "AI CRM", body: "Ask 'show me leads from Google Ads last month' or 'which sources give the best leads?' — get instant answers, not exports." },
+  { icon: BarChart3, title: "Cross-Data Analytics", body: "Unify CRM, inventory, GA4, Search Console, Auto Trader, CarGurus, Google & Meta Ads — and let them talk to each other." },
+  { icon: Boxes, title: "Smart Inventory", body: "'Which cars sold most?', 'What sat over 100 days?', 'What will sell next season?' — your inventory finally answers back." },
+  { icon: Bot, title: "AI Chatbot", body: "Customers chat directly with your inventory: 'I'm looking for something under $20,000.' Done." },
+  { icon: MessagesSquare, title: "Unified Conversations", body: "Facebook, Instagram, WhatsApp, SMS, email, chatbot — every conversation in one inbox, with full context." },
+  { icon: Mail, title: "AI Email Marketing", body: "Generate on-brand templates and campaigns in minutes, not days." },
+  { icon: MessageCircle, title: "SMS Marketing", body: "Reach buyers where they read — high-open SMS campaigns, fully automated." },
+];
+
+const problems = [
+  { q: "Which sources give me the best leads?", a: "AI ranks every channel by lead quality, conversion and ROI in one view." },
+  { q: "If I have $10,000, where should I spend it?", a: "Get an AI-recommended budget split across Google, Meta, Auto Trader & CarGurus." },
+  { q: "Which cars are mostly sold this season?", a: "AI surfaces seasonal patterns from years of inventory & service data." },
+  { q: "Which inventory has aged over 100 days?", a: "Instant filter — plus AI suggestions to move it (price, ad, channel)." },
+];
+
+const usps = [
+  { icon: Brain, title: "AI at the center", body: "Every tool feeds one intelligent core. Data doesn't just sit — it talks." },
+  { icon: Layers, title: "Cross-data conversations", body: "Marketing, sales, inventory & service data all answer questions together." },
+  { icon: DollarSign, title: "All-in-one pricing", body: "Replace 6 vendor bills with one — or subscribe only to the modules you need." },
+  { icon: Zap, title: "One smooth ecosystem", body: "No tab-hopping. No syncing lag. Built as one platform from day one." },
+];
 
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <>
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 -z-10 opacity-40"
+          style={{
+            backgroundImage: `url(${heroImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            maskImage: "linear-gradient(to bottom, black 40%, transparent)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 40%, transparent)",
+          }}
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-hero" />
+
+        <div className="container mx-auto max-w-6xl px-4 pt-20 pb-24 text-center md:pt-28 md:pb-32">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border glass px-3 py-1 text-xs text-muted-foreground">
+            <Sparkles className="h-3.5 w-3.5 text-primary" />
+            AI-native dealership platform
+          </span>
+
+          <h1 className="mx-auto mt-6 max-w-4xl font-display text-4xl font-bold leading-[1.05] md:text-7xl">
+            Stop storing data. <br />
+            <span className="text-gradient">Start talking to it.</span>
+          </h1>
+
+          <p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground md:text-lg">
+            CognoSales unifies CRM, analytics, inventory, chatbot and marketing into one AI-powered ecosystem —
+            so your team makes faster, smarter decisions and sells more.
+          </p>
+
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button size="lg" className="bg-gradient-brand text-brand-foreground shadow-glow hover:opacity-90">
+              Start free trial <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button size="lg" variant="outline" className="bg-secondary/30">
+              Book a demo
+            </Button>
+          </div>
+
+          {/* Demo prompt card */}
+          <div className="mx-auto mt-14 max-w-3xl">
+            <div className="rounded-2xl glass p-1 shadow-elegant animate-pulse-glow">
+              <div className="rounded-xl bg-card/80 p-5 text-left">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="h-2 w-2 rounded-full bg-destructive/70" />
+                  <span className="h-2 w-2 rounded-full bg-primary/70" />
+                  <span className="h-2 w-2 rounded-full bg-accent/70" />
+                  <span className="ml-2">CognoSales · Ask your data</span>
+                </div>
+                <div className="mt-4 font-mono text-sm md:text-base">
+                  <span className="text-muted-foreground">›</span>{" "}
+                  <span className="text-foreground">Which sources gave us the best leads last month?</span>
+                </div>
+                <div className="mt-3 rounded-lg bg-secondary/60 p-3 text-sm text-muted-foreground">
+                  <span className="text-primary">CognoAI:</span> Google Ads delivered <b className="text-foreground">42%</b> of converted leads
+                  at <b className="text-foreground">$38 CPL</b>. Auto Trader had highest lead quality (8.6/10).
+                  Suggested next-month split: Google 55%, Auto Trader 30%, Meta 15%.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* USPs */}
+      <section className="container mx-auto max-w-6xl px-4 py-20">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {usps.map((u) => (
+            <div key={u.title} className="rounded-2xl bg-gradient-card p-6 shadow-card transition-smooth hover:-translate-y-1 hover:shadow-glow">
+              <span className="grid h-11 w-11 place-items-center rounded-lg bg-gradient-brand">
+                <u.icon className="h-5 w-5 text-brand-foreground" />
+              </span>
+              <h3 className="mt-4 font-display text-lg font-semibold">{u.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{u.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* TOOLS */}
+      <section className="container mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="text-xs font-medium uppercase tracking-wider text-primary">Platform</span>
+          <h2 className="mt-3 font-display text-3xl font-bold md:text-5xl">
+            Seven tools. <span className="text-gradient">One brain.</span>
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Buy them all, or pick the ones you need. Either way, they share the same data and the same AI.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {tools.map((t) => (
+            <div
+              key={t.title}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-card p-6 shadow-card transition-smooth hover:-translate-y-1 hover:shadow-glow"
+            >
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-brand shadow-glow">
+                <t.icon className="h-6 w-6 text-brand-foreground" />
+              </span>
+              <h3 className="mt-5 font-display text-xl font-semibold">{t.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{t.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ASK ANYTHING */}
+      <section className="container mx-auto max-w-6xl px-4 py-20">
+        <div className="rounded-3xl bg-gradient-card p-8 shadow-elegant md:p-14">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-3xl font-bold md:text-5xl">
+              Ask anything. <span className="text-gradient">Get answers.</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Your team already asks these questions. CognoSales just answers them — instantly.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
+            {problems.map((p) => (
+              <div key={p.q} className="rounded-xl border border-border bg-card/60 p-5">
+                <div className="flex items-start gap-3">
+                  <span className="mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-gradient-brand text-xs font-bold text-brand-foreground">?</span>
+                  <p className="font-medium">{p.q}</p>
+                </div>
+                <p className="mt-3 pl-9 text-sm text-muted-foreground">{p.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY DIFFERENT */}
+      <section className="container mx-auto max-w-6xl px-4 py-20">
+        <div className="grid gap-12 md:grid-cols-2 md:items-center">
+          <div>
+            <span className="text-xs font-medium uppercase tracking-wider text-primary">Why CognoSales</span>
+            <h2 className="mt-3 font-display text-3xl font-bold md:text-5xl">
+              The end of <span className="text-gradient">tool sprawl.</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Most dealers run 5–7 disconnected tools, pay for each one, and still can't get a straight answer.
+              CognoSales replaces them with a single, fast, AI-native platform.
+            </p>
+
+            <ul className="mt-6 space-y-3">
+              {[
+                "One price for the entire ecosystem",
+                "Or subscribe to individual tools — your call",
+                "Built as one platform — no syncing lag, no broken integrations",
+                "AI assistant trained on YOUR data, not generic templates",
+              ].map((b) => (
+                <li key={b} className="flex items-start gap-3 text-sm">
+                  <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-gradient-brand">
+                    <Check className="h-3 w-3 text-brand-foreground" />
+                  </span>
+                  <span className="text-muted-foreground">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="relative">
+            <div className="rounded-2xl bg-gradient-card p-6 shadow-elegant">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Monthly tool stack</div>
+                  <div className="mt-1 font-display text-2xl font-bold text-destructive">$2,400+</div>
+                </div>
+                <span className="rounded-full bg-destructive/15 px-3 py-1 text-xs text-destructive">Before</span>
+              </div>
+              <div className="my-4 space-y-2 text-sm text-muted-foreground">
+                {["CRM · $499", "Analytics · $399", "Inventory · $349", "Chatbot · $299", "Email tool · $249", "SMS tool · $199", "Conversations · $399"].map((x) => (
+                  <div key={x} className="flex items-center justify-between rounded-lg bg-secondary/40 px-3 py-2">
+                    <span>{x}</span>
+                    <span className="text-muted-foreground/70">monthly</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative -mt-4 rounded-2xl bg-gradient-brand p-6 shadow-glow">
+              <div className="flex items-center justify-between text-brand-foreground">
+                <div>
+                  <div className="text-xs uppercase tracking-wider opacity-80">CognoSales — all-in-one</div>
+                  <div className="mt-1 font-display text-3xl font-bold">$699<span className="text-sm font-normal opacity-80">/mo</span></div>
+                </div>
+                <span className="rounded-full bg-brand-foreground/15 px-3 py-1 text-xs">After</span>
+              </div>
+              <p className="mt-3 text-sm text-brand-foreground/90">Every tool above + AI across all of them. Cancel anytime.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="container mx-auto max-w-5xl px-4 py-24">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-brand p-10 text-center shadow-glow md:p-16">
+          <h2 className="font-display text-3xl font-bold text-brand-foreground md:text-5xl">
+            Ready to talk to your data?
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-brand-foreground/90">
+            Join the dealerships using CognoSales to make faster decisions and close more deals.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button size="lg" variant="secondary" className="bg-background text-foreground hover:bg-background/90">
+              Start free trial <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Link to="/contact">
+              <Button size="lg" variant="outline" className="border-brand-foreground/30 bg-transparent text-brand-foreground hover:bg-brand-foreground/10">
+                Talk to sales
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
