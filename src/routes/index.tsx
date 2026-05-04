@@ -60,7 +60,7 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div
-          className="absolute inset-0 -z-10 opacity-40"
+          className="absolute inset-0 -z-10 opacity-20"
           style={{
             backgroundImage: `url(${heroImg})`,
             backgroundSize: "cover",
