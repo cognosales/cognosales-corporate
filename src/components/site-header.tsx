@@ -3,11 +3,11 @@ import { Sparkles, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-const nav = [
+const nav: { to: "/" | "/about" | "/contact"; label: string }[] = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
-] as const;
+];
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ export function SiteHeader() {
           {nav.map((n) => (
             <Link
               key={n.to}
-              to={n.to}
+              to={n.to as any}
               className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-smooth hover:bg-secondary hover:text-foreground"
               activeProps={{ className: "rounded-md px-3 py-2 text-sm text-foreground bg-secondary" }}
             >
@@ -58,7 +58,7 @@ export function SiteHeader() {
             {nav.map((n) => (
               <Link
                 key={n.to}
-                to={n.to}
+                to={n.to as any}
                 onClick={() => setOpen(false)}
                 className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
                 activeProps={{ className: "rounded-md px-3 py-2 text-sm text-foreground bg-secondary" }}
