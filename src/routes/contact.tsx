@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { Mail, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { submitContact } from "@/server/contact.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -22,6 +24,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
+  const submit = useServerFn(submitContact);
   return (
     <>
       <Toaster />
@@ -59,33 +62,46 @@ function ContactPage() {
           <form
             id="contact-form"
             className="md:col-span-3 rounded-2xl bg-gradient-card p-6 shadow-elegant md:p-8"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
+              const form = e.currentTarget;
+              const fd = new FormData(form);
+              const payload = {
+                name: String(fd.get("name") ?? ""),
+                email: String(fd.get("email") ?? ""),
+                company: String(fd.get("company") ?? ""),
+                message: String(fd.get("message") ?? ""),
+              };
               setSubmitting(true);
-              setTimeout(() => {
-                setSubmitting(false);
+              try {
+                await submit({ data: payload });
                 toast.success("Message sent! We'll be in touch shortly.");
-                (e.target as HTMLFormElement).reset();
-              }, 700);
+                form.reset();
+              } catch (err) {
+                console.error(err);
+                toast.error("Something went wrong. Please try again.");
+              } finally {
+                setSubmitting(false);
+              }
             }}
           >
             <h2 className="font-display text-2xl font-semibold">Send us a message</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">Full name</Label>
-                <Input id="name" required placeholder="Jane Doe" />
+                <Input id="name" name="name" required maxLength={100} placeholder="Jane Doe" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Work email</Label>
-                <Input id="email" type="email" required placeholder="jane@dealership.com" />
+                <Input id="email" name="email" type="email" required maxLength={255} placeholder="jane@dealership.com" />
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="company">Company</Label>
-                <Input id="company" placeholder="Acme Auto Group" />
+                <Input id="company" name="company" maxLength={100} placeholder="Acme Auto Group" />
               </div>
               <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="message">How can we help?</Label>
-                <Textarea id="message" required rows={5} placeholder="Tell us a bit about your team and goals…" />
+                <Textarea id="message" name="message" required maxLength={2000} rows={5} placeholder="Tell us a bit about your team and goals…" />
               </div>
             </div>
             <Button
