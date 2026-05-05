@@ -58,14 +58,13 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-hero-dark">
         <div
-          className="absolute inset-0 -z-10 opacity-60"
+          className="absolute inset-0 -z-10 opacity-90"
           style={{
             backgroundImage: `url(${heroImg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            maskImage: "linear-gradient(to bottom, black 50%, transparent)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent)",
-            mixBlendMode: "screen",
+            maskImage: "linear-gradient(to bottom, black 60%, transparent)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent)",
           }}
         />
 
@@ -84,29 +83,6 @@ function Index() {
             CognoSales unifies CRM, analytics, inventory, chatbot and marketing into one AI-powered
             ecosystem — built to grow sales and help your team make informed decisions, fast.
           </p>
-
-          {/* Headline pills */}
-          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-xs">
-            {[
-              { icon: Brain, label: "AI at the center" },
-              { icon: Layers, label: "Cross-data conversations" },
-              { icon: DollarSign, label: "All-in-one pricing" },
-              { icon: Zap, label: "One smooth ecosystem" },
-            ].map((b) => (
-              <span key={b.label} className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-white/85 backdrop-blur">
-                <b.icon className="h-3.5 w-3.5" />
-                {b.label}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link to="/contact">
-              <Button size="lg" className="bg-gradient-brand text-brand-foreground shadow-glow hover:opacity-90">
-                Talk to sales <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
 
           {/* Demo prompt card */}
           <div className="mx-auto mt-14 max-w-3xl">
