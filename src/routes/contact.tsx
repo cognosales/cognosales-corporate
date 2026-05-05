@@ -57,6 +57,7 @@ function ContactPage() {
           </div>
 
           <form
+            id="contact-form"
             className="md:col-span-3 rounded-2xl bg-gradient-card p-6 shadow-elegant md:p-8"
             onSubmit={(e) => {
               e.preventDefault();

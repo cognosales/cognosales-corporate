@@ -37,7 +37,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Link to="/contact">
+          <Link to="/contact" hash="contact-form">
             <Button size="sm" className="bg-gradient-brand text-brand-foreground hover:opacity-90">
               Get started
             </Button>
@@ -67,7 +67,7 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
-            <Link to="/contact" onClick={() => setOpen(false)}>
+            <Link to="/contact" hash="contact-form" onClick={() => setOpen(false)}>
               <Button size="sm" className="mt-2 w-full bg-gradient-brand text-brand-foreground">
                 Get started
               </Button>
