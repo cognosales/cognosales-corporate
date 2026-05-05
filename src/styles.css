@@ -123,10 +123,10 @@
   .shadow-card { box-shadow: var(--shadow-card); }
   .transition-smooth { transition: var(--transition-smooth); }
   .glass {
-    background: oklch(1 0 0 / 0.7);
+    background: oklch(1 0 0 / 0.98);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid oklch(0.22 0.04 260 / 0.08);
+    border-bottom: 1px solid oklch(0.22 0.04 260 / 0.08);
   }
 }
 

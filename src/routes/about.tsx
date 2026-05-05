@@ -25,17 +25,17 @@ const values = [
 function AboutPage() {
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-hero">
-        <div className="container mx-auto max-w-5xl px-4 py-24 text-center md:py-32">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs text-muted-foreground">
+      <section className="relative overflow-hidden bg-gradient-hero-dark">
+        <div className="container mx-auto max-w-5xl px-4 py-20 text-center md:py-28">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs text-white/80 backdrop-blur">
             About CognoSales
           </span>
-          <h1 className="mt-6 font-display text-4xl font-bold leading-tight md:text-6xl">
+          <h1 className="mt-6 font-display text-4xl font-bold leading-tight text-white md:text-6xl">
             Transforming CRM <br />
             <span className="text-gradient">from storing to talking.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            For decades, dealership software just stored data. We built CognoSales so your data finally talks back —
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/75">
+            For decades, business software just stored data. We built CognoSales so your data finally talks back —
             connecting CRM, inventory, analytics, marketing and conversations into one intelligent ecosystem.
           </p>
         </div>

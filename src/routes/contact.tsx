@@ -36,7 +36,7 @@ function ContactPage() {
         </div>
       </section>
 
-      <section className="container mx-auto max-w-6xl px-4 pb-24">
+      <section className="container mx-auto max-w-6xl px-4 pt-16 pb-24 md:pt-20">
         <div className="grid gap-10 md:grid-cols-5">
           <div className="md:col-span-2 space-y-6">
             {[
