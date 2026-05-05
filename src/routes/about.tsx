@@ -4,8 +4,8 @@ import { Brain, Users, Sparkles, Target, Heart, Rocket } from "lucide-react";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — CognoSales" },
-      { name: "description", content: "We're transforming dealership software from storing data to talking to data — putting AI at the center of every decision." },
+      { title: "About - CognoSales" },
+      { name: "description", content: "We're transforming dealership software from storing data to talking to data - putting AI at the center of every decision." },
       { property: "og:title", content: "About CognoSales" },
       { property: "og:description", content: "AI at the center. Data on every side. One ecosystem for the modern dealership." },
     ],
@@ -14,9 +14,9 @@ export const Route = createFileRoute("/about")({
 });
 
 const values = [
-  { icon: Brain, title: "AI-native, not bolted on", body: "Every module was designed around an AI core — not a chatbot pasted onto legacy software." },
+  { icon: Brain, title: "AI-native, not bolted on", body: "Every module was designed around an AI core - not a chatbot pasted onto legacy software." },
   { icon: Sparkles, title: "Talk to your data", body: "Stop digging through dashboards. Ask a question, get an answer, take action." },
-  { icon: Target, title: "One price, one platform", body: "Replace 6 tools with one ecosystem — or pick only the modules you need." },
+  { icon: Target, title: "One price, one platform", body: "Replace 6 tools with one ecosystem - or pick only the modules you need." },
   { icon: Rocket, title: "Built for speed", body: "A unified data layer means no lag, no syncing, no waiting between tools." },
   { icon: Users, title: "Made with operators", body: "Built side-by-side with sales teams, marketers and inventory specialists across industries." },
   { icon: Heart, title: "Customer obsessed", body: "Your success is our roadmap. Real humans, real fast, every step." },
@@ -35,7 +35,7 @@ function AboutPage() {
             <span className="text-gradient">from storing to talking.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white/75">
-            For decades, business software just stored data. We built CognoSales so your data finally talks back —
+            For decades, business software just stored data. We built CognoSales so your data finally talks back -
             connecting CRM, inventory, analytics, marketing and conversations into one intelligent ecosystem.
           </p>
         </div>
@@ -46,12 +46,12 @@ function AboutPage() {
           <div>
             <h2 className="font-display text-3xl font-bold md:text-4xl">Our mission</h2>
             <p className="mt-4 text-muted-foreground">
-              Dealers are drowning in tools — a CRM here, an analytics dashboard there, an inventory system, a marketing platform,
+              Dealers are drowning in tools - a CRM here, an analytics dashboard there, an inventory system, a marketing platform,
               a chatbot tacked on. The data sits in silos. The decisions get slower. The opportunities slip away.
             </p>
             <p className="mt-4 text-muted-foreground">
               CognoSales puts <span className="text-foreground font-medium">AI at the center</span>, with every data source
-              feeding into it. Ask a question across CRM, inventory, ads and conversations — get a single, intelligent answer.
+              feeding into it. Ask a question across CRM, inventory, ads and conversations - get a single, intelligent answer.
               That's how modern dealerships sell.
             </p>
           </div>
