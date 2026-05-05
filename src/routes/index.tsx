@@ -15,6 +15,7 @@ import {
   Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -56,7 +57,24 @@ function Index() {
     <>
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-hero-dark">
-        <div className="container mx-auto max-w-6xl px-4 pt-20 pb-24 text-center md:pt-28 md:pb-32">
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{
+            backgroundImage: `url(${heroImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, oklch(0.18 0.04 265 / 0.55) 0%, oklch(0.18 0.04 265 / 0.75) 70%, oklch(0.18 0.04 265) 100%)",
+          }}
+          aria-hidden
+        />
+        <div className="relative container mx-auto max-w-6xl px-4 pt-20 pb-24 text-center md:pt-28 md:pb-32">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs text-white/80 backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-white" />
             AI-native Customer Engagement Platform
