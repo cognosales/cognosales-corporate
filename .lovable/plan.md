@@ -1,79 +1,81 @@
 
 ## Goal
-Make the contact form on `/contact` actually save submissions and notify you by email, in a way that runs identically on Lovable preview AND on Railway.
+Make the app build and run on Railway (Node.js host) instead of Cloudflare Workers, without breaking the Lovable preview.
 
-## Architecture
+## Current state
+- `vite.config.ts` uses `@lovable.dev/vite-tanstack-config`, which targets Cloudflare Workers by default (the `cloudflare` plugin is included automatically).
+- `wrangler.jsonc` exists at the project root — Workers-specific config.
+- Server function (`submitContact`) and Supabase admin client both use `process.env.*`, which works on Node too — no code changes needed there.
 
-```text
-[Contact form on /contact]
-         |
-         v
-[TanStack server function: submitContact]
-         |
-         +--> Supabase (Postgres) --> contact_submissions table
-         |
-         +--> Resend API ----------> email to hello@cognosales.com
+## What changes
+
+### 1. Switch Vite to the Node target
+Update `vite.config.ts` to disable the Cloudflare preset and enable the Node SSR target for TanStack Start:
+
+```ts
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+
+export default defineConfig({
+  target: "node", // build for Node.js instead of Cloudflare Workers
+});
 ```
 
-No queues, no cron, no Lovable-specific runtime dependencies. Works on any host that runs Node/Workers.
+(If the preset doesn't expose a `target` option, fall back to passing `vite: { ... }` overrides that set TanStack Start's `target: 'node-server'` and remove the cloudflare plugin.)
 
-## Step 1 — Enable Lovable Cloud
-Provisions a Supabase project automatically. Auto-generates `@/integrations/supabase/client` and `client.server`. Gives you env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL`.
+### 2. Remove `wrangler.jsonc`
+Delete the file — it's only read by Cloudflare's tooling and is misleading on a Node deploy.
 
-## Step 2 — Create the database table
-Migration creates `public.contact_submissions`:
-- `id uuid pk default gen_random_uuid()`
-- `name text not null`
-- `email text not null`
-- `company text`
-- `message text not null`
-- `created_at timestamptz default now()`
+### 3. Add Railway config files
+Create two small files at the project root:
 
-RLS enabled. Policies:
-- Public `INSERT` allowed (anyone can submit the form)
-- No `SELECT` policy → only the service role (you, via dashboard) can read submissions. Prevents data leaks.
+- **`railway.json`** — tells Railway how to build/start:
+  ```json
+  {
+    "$schema": "https://railway.app/railway.schema.json",
+    "build": { "builder": "NIXPACKS" },
+    "deploy": {
+      "startCommand": "node .output/server/index.mjs",
+      "restartPolicyType": "ON_FAILURE"
+    }
+  }
+  ```
 
-## Step 3 — Add Resend
-- Ask you for your `RESEND_API_KEY` and store it as a Lovable secret
-- Use the `onboarding@resend.dev` sender initially (no DNS needed) — you can switch to `noreply@cognosales.com` later by verifying your domain in Resend
-- Email goes to `hello@cognosales.com` with subject like "New CognoSales contact: <name>"
+- **`nixpacks.toml`** — pins Bun for the install/build steps:
+  ```toml
+  [phases.setup]
+  nixPkgs = ["bun", "nodejs_20"]
 
-## Step 4 — Server function
-Create `src/server/contact.functions.ts` exporting `submitContact`:
-- Zod-validates input (name 1–100, email valid + max 255, company max 100, message 1–2000)
-- Inserts into `contact_submissions` via `supabaseAdmin`
-- Calls Resend `POST /emails` with the submission details
-- Returns `{ ok: true }` on success, throws on validation failure
-- Email send is non-blocking for the user — if Resend fails, the row is still saved and the user sees success (we log the email error server-side)
+  [phases.install]
+  cmds = ["bun install"]
 
-## Step 5 — Wire up the form
-Update `src/routes/contact.tsx`:
-- Replace the fake `setTimeout` with a real call to `submitContact` via `useServerFn`
-- Add `name="..."` attributes on each input so we can read FormData
-- Keep the existing toast UX
-- Disable button + show "Sending…" during submit
-- On error, show `toast.error` with a friendly message
+  [phases.build]
+  cmds = ["bun run build"]
+  ```
 
-## Step 6 — Railway deployment guide (in chat, no code)
-After everything works in Lovable, I'll give you the exact list of env vars to paste into Railway:
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `RESEND_API_KEY`
+### 4. Verify the build output path
+After switching to the Node target, TanStack Start writes the server bundle to `.output/server/index.mjs` (standard Nitro/Node output). The `startCommand` above matches that.
 
-Plus: confirm Railway's build command is `bun run build` and start command is correct for TanStack Start (Node adapter — note Railway runs Node, not Cloudflare Workers, so we'll verify the build target works there).
+### 5. No code changes needed
+- `src/server/contact.functions.ts` already reads `process.env.RESEND_API_KEY` inside the handler ✅
+- `src/integrations/supabase/client.server.ts` already reads `process.env.SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` inside the factory ✅
+- Form wiring on `/contact` is unchanged ✅
 
 ## Files affected
-- `src/routes/contact.tsx` — wire form to server function
-- `src/server/contact.functions.ts` — new (server function)
-- `src/server/contact.server.ts` — new (Resend send helper)
-- New DB migration for `contact_submissions` table + RLS
+- `vite.config.ts` — add `target: "node"`
+- `wrangler.jsonc` — delete
+- `railway.json` — new
+- `nixpacks.toml` — new
 
-## What you need to do
-1. Approve this plan
-2. Sign up at resend.com (free), grab an API key from their dashboard, paste it when I ask
-3. Later: verify cognosales.com in Resend if you want emails from your own domain
+## After this is done — your Railway deploy steps
+1. Push to GitHub via Lovable → Connectors → GitHub → Connect project
+2. In Railway: New Project → Deploy from GitHub repo → pick the repo
+3. Variables tab → paste these 5:
+   - `VITE_SUPABASE_URL` = `https://nxohzmezamvsyyhepoki.supabase.co`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY` = (the long key from `.env`)
+   - `SUPABASE_URL` = same as above
+   - `SUPABASE_SERVICE_ROLE_KEY` = copy from Lovable → Cloud → Settings → API keys
+   - `RESEND_API_KEY` = the Resend key you already added
+4. Railway auto-builds and gives you a URL. Test the contact form — submission should land in the database and email should arrive.
 
-## Open question
-You mentioned hosting on Railway specifically. Heads up: this project is currently configured for Cloudflare Workers (`wrangler.jsonc`). TanStack Start can target Node for Railway, but it's a small config change. I'll handle that if/when you're ready to deploy — just flagging it so it's not a surprise.
+## Risk / open question
+The `@lovable.dev/vite-tanstack-config` preset wraps the Cloudflare plugin internally. If `target: "node"` isn't a supported option on that preset, I'll need to override the SSR target via the `vite` escape hatch. I'll verify the exact API when I open the preset's types during implementation, and pick whichever form works without ejecting from the Lovable preset.
