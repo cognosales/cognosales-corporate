@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Sparkles, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/cognosales-logo.png";
 
 const nav: { to: "/" | "/about" | "/pricing" | "/contact"; label: string }[] = [
   { to: "/", label: "Home" },
@@ -16,9 +17,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 w-full glass">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-brand shadow-glow">
-            <Sparkles className="h-5 w-5 text-brand-foreground" />
-          </span>
+          <img src={logo} alt="CognoSales logo" className="h-9 w-9 object-contain" />
           <span className="font-display text-lg font-semibold tracking-tight">
             Cogno<span className="text-gradient">Sales</span>
           </span>
