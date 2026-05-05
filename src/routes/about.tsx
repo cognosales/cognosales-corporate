@@ -18,7 +18,7 @@ const values = [
   { icon: Sparkles, title: "Talk to your data", body: "Stop digging through dashboards. Ask a question, get an answer, take action." },
   { icon: Target, title: "One price, one platform", body: "Replace 6 tools with one ecosystem — or pick only the modules you need." },
   { icon: Rocket, title: "Built for speed", body: "A unified data layer means no lag, no syncing, no waiting between tools." },
-  { icon: Users, title: "Made with dealers", body: "Built side-by-side with sales teams, marketers and inventory specialists." },
+  { icon: Users, title: "Made with operators", body: "Built side-by-side with sales teams, marketers and inventory specialists across industries." },
   { icon: Heart, title: "Customer obsessed", body: "Your success is our roadmap. Real humans, real fast, every step." },
 ];
 

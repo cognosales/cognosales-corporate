@@ -3,9 +3,10 @@ import { Sparkles, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-const nav: { to: "/" | "/about" | "/contact"; label: string }[] = [
+const nav: { to: "/" | "/about" | "/pricing" | "/contact"; label: string }[] = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
+  { to: "/pricing", label: "Pricing" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -37,10 +38,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="sm">Sign in</Button>
-          <Button size="sm" className="bg-gradient-brand text-brand-foreground hover:opacity-90">
-            Get started
-          </Button>
+          <Link to="/contact">
+            <Button size="sm" className="bg-gradient-brand text-brand-foreground hover:opacity-90">
+              Get started
+            </Button>
+          </Link>
         </div>
 
         <button
@@ -66,9 +68,11 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
-            <Button size="sm" className="mt-2 bg-gradient-brand text-brand-foreground">
-              Get started
-            </Button>
+            <Link to="/contact" onClick={() => setOpen(false)}>
+              <Button size="sm" className="mt-2 w-full bg-gradient-brand text-brand-foreground">
+                Get started
+              </Button>
+            </Link>
           </nav>
         </div>
       )}
