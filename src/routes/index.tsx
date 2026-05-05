@@ -56,18 +56,18 @@ function Index() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden bg-gradient-hero-dark">
         <div
-          className="absolute inset-0 -z-10 opacity-20"
+          className="absolute inset-0 -z-10 opacity-60"
           style={{
             backgroundImage: `url(${heroImg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            maskImage: "linear-gradient(to bottom, black 40%, transparent)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 40%, transparent)",
+            maskImage: "linear-gradient(to bottom, black 50%, transparent)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent)",
+            mixBlendMode: "screen",
           }}
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-hero" />
 
         <div className="container mx-auto max-w-6xl px-4 pt-20 pb-24 text-center md:pt-28 md:pb-32">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs text-white/80 backdrop-blur">
