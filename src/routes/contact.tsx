@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — CognoSales" },
+      { title: "Contact - CognoSales" },
       { name: "description", content: "Talk to the CognoSales team. Book a demo, ask a question, or just say hello." },
       { property: "og:title", content: "Contact CognoSales" },
       { property: "og:description", content: "Book a demo or get in touch with our team." },

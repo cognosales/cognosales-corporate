@@ -20,21 +20,21 @@ import heroImg from "@/assets/hero.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CognoSales — Talk to your data. Sell smarter." },
-      { name: "description", content: "AI-native CRM, analytics, inventory, chatbot and marketing for modern dealerships. Ask your data anything — get answers, not dashboards." },
-      { property: "og:title", content: "CognoSales — Talk to your data. Sell smarter." },
-      { property: "og:description", content: "AI at the center. CRM, analytics, inventory, chatbot, email & SMS — one ecosystem, one price." },
+      { title: "CognoSales - Talk to your data. Sell smarter." },
+      { name: "description", content: "AI-native CRM, analytics, inventory, chatbot and marketing for modern dealerships. Ask your data anything - get answers, not dashboards." },
+      { property: "og:title", content: "CognoSales - Talk to your data. Sell smarter." },
+      { property: "og:description", content: "AI at the center. CRM, analytics, inventory, chatbot, email & SMS - one ecosystem, one price." },
     ],
   }),
   component: Index,
 });
 
 const tools = [
-  { icon: Database, title: "AI CRM", body: "Ask 'show me leads from Google Ads last month' or 'which sources give the best leads?' — get instant answers, not exports." },
-  { icon: BarChart3, title: "Cross-Data Analytics", body: "Unify CRM, inventory, GA4, Search Console, ad platforms and marketplaces — and let them talk to each other." },
-  { icon: Boxes, title: "Smart Inventory", body: "'What sold most?', 'What sat over 100 days?', 'What will sell next season?' — your inventory finally answers back." },
+  { icon: Database, title: "AI CRM", body: "Ask 'show me leads from Google Ads last month' or 'which sources give the best leads?' - get instant answers, not exports." },
+  { icon: BarChart3, title: "Cross-Data Analytics", body: "Unify CRM, inventory, GA4, Search Console, ad platforms and marketplaces - and let them talk to each other." },
+  { icon: Boxes, title: "Smart Inventory", body: "'What sold most?', 'What sat over 100 days?', 'What will sell next season?' - your inventory finally answers back." },
   { icon: Bot, title: "AI Chatbot", body: "Customers chat directly with your catalog: 'I'm looking for something under $20,000.' Done." },
-  { icon: MessagesSquare, title: "Unified Conversations", body: "Facebook, Instagram, WhatsApp, SMS, email, chatbot — every conversation in one inbox, with full context." },
+  { icon: MessagesSquare, title: "Unified Conversations", body: "Facebook, Instagram, WhatsApp, SMS, email, chatbot - every conversation in one inbox, with full context." },
   { icon: Mail, title: "AI Email Marketing", body: "Generate on-brand templates and campaigns in minutes, not days." },
 ];
 
@@ -42,13 +42,13 @@ const problems = [
   { q: "Which sources give me the best leads?", a: "AI ranks every channel by lead quality, conversion and ROI in one view." },
   { q: "If I have $10,000, where should I spend it?", a: "Get an AI-recommended budget split across all your paid channels." },
   { q: "What's selling most this season?", a: "AI surfaces seasonal patterns from years of inventory & sales data." },
-  { q: "Which inventory has aged over 100 days?", a: "Instant filter — plus AI suggestions to move it (price, ad, channel)." },
+  { q: "Which inventory has aged over 100 days?", a: "Instant filter - plus AI suggestions to move it (price, ad, channel)." },
 ];
 
 const usps = [
-  { icon: Brain, title: "AI at the center", body: "Every tool feeds one intelligent core. Data doesn't just sit — it talks." },
+  { icon: Brain, title: "AI at the center", body: "Every tool feeds one intelligent core. Data doesn't just sit - it talks." },
   { icon: Layers, title: "Cross-data conversations", body: "Marketing, sales, inventory & service data all answer questions together." },
-  { icon: DollarSign, title: "All-in-one pricing", body: "Replace 6 vendor bills with one — or subscribe only to the modules you need." },
+  { icon: DollarSign, title: "All-in-one pricing", body: "Replace 6 vendor bills with one - or subscribe only to the modules you need." },
   { icon: Zap, title: "One smooth ecosystem", body: "No tab-hopping. No syncing lag. Built as one platform from day one." },
 ];
 
@@ -81,7 +81,7 @@ function Index() {
 
           <p className="mx-auto mt-6 max-w-2xl text-base text-white/75 md:text-lg">
             CognoSales unifies CRM, analytics, inventory, chatbot and marketing into one AI-powered
-            ecosystem — built to grow sales and help your team make informed decisions, fast.
+            ecosystem - built to grow sales and help your team make informed decisions, fast.
           </p>
 
           {/* Demo prompt card */}
@@ -117,7 +117,7 @@ function Index() {
             Built to <span className="text-gradient">grow sales.</span>
           </h2>
           <p className="mt-4 text-muted-foreground">
-            For dealerships, e-commerce, retail and any business with inventory and customers — make informed decisions, faster.
+            For dealerships, e-commerce, retail and any business with inventory and customers - make informed decisions, faster.
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -169,7 +169,7 @@ function Index() {
               Ask anything. <span className="text-gradient">Get answers.</span>
             </h2>
             <p className="mt-4 text-muted-foreground">
-              Your team already asks these questions. CognoSales just answers them — instantly.
+              Your team already asks these questions. CognoSales just answers them - instantly.
             </p>
           </div>
 
@@ -203,8 +203,8 @@ function Index() {
             <ul className="mt-6 space-y-3">
               {[
                 "One price for the entire ecosystem",
-                "Or subscribe to individual tools — your call",
-                "Built as one platform — no syncing lag, no broken integrations",
+                "Or subscribe to individual tools - your call",
+                "Built as one platform - no syncing lag, no broken integrations",
                 "AI assistant trained on YOUR data, not generic templates",
               ].map((b) => (
                 <li key={b} className="flex items-start gap-3 text-sm">
@@ -239,7 +239,7 @@ function Index() {
             <div className="relative -mt-4 rounded-2xl bg-gradient-brand p-6 shadow-glow">
               <div className="flex items-center justify-between text-brand-foreground">
                 <div>
-                  <div className="text-xs uppercase tracking-wider opacity-80">CognoSales — Unified Suite</div>
+                  <div className="text-xs uppercase tracking-wider opacity-80">CognoSales - Unified Suite</div>
                   <div className="mt-1 font-display text-3xl font-bold">$2,000<span className="text-sm font-normal opacity-80"> CAD/mo</span></div>
                 </div>
                 <span className="rounded-full bg-brand-foreground/15 px-3 py-1 text-xs">After</span>

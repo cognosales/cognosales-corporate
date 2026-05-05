@@ -6,10 +6,10 @@ import { useMemo, useState } from "react";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — CognoSales" },
+      { title: "Pricing - CognoSales" },
       { name: "description", content: "Unified Suite at one flat price, or pick only the modules you need. Transparent CAD pricing with no per-seat fees." },
       { property: "og:title", content: "CognoSales Pricing" },
-      { property: "og:description", content: "All-in-one Unified Suite or à la carte Custom Suite — your call." },
+      { property: "og:description", content: "All-in-one Unified Suite or à la carte Custom Suite - your call." },
     ],
   }),
   component: PricingPage,
