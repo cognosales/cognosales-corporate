@@ -16,7 +16,7 @@ export function SiteFooter() {
               </span>
             </Link>
             <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-              The AI-native dealership platform. Talk to your data, act on the answers, sell more.
+              The AI-native customer engagement platform. Talk to your data, act on the answers, sell more.
             </p>
           </div>
           <div>
@@ -33,6 +33,7 @@ export function SiteFooter() {
             <h4 className="text-sm font-semibold text-foreground">Company</h4>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-foreground">About</Link></li>
+              <li><Link to="/pricing" className="hover:text-foreground">Pricing</Link></li>
               <li><Link to="/contact" className="hover:text-foreground">Contact</Link></li>
             </ul>
           </div>
