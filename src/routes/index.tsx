@@ -15,7 +15,6 @@ import {
   Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
