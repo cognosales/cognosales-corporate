@@ -1,0 +1,12 @@
+# Railway / Nixpacks build config — uses Bun for install + build, Node to run.
+[phases.setup]
+nixPkgs = ["bun", "nodejs_20"]
+
+[phases.install]
+cmds = ["bun install"]
+
+[phases.build]
+cmds = ["bun run build"]
+
+[start]
+cmd = "node .output/server/index.mjs"
