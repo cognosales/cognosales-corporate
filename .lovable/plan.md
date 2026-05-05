@@ -1,36 +1,24 @@
-## Switch to a Light/White Theme
+## Goal
+Replace the current busy hero image on the homepage with a minimal, on-brand visual that primarily represents **Voice AI**, with subtle nods to **data** and **SaaS**.
 
-Convert the current dark-first design to a clean, white/light theme while keeping the AI-native polish (gradients, glow accents, glass effects).
+## Visual direction
+- **Subject**: A single, centered abstract voice waveform (sound wave / equalizer bars) — the universal signal of voice AI.
+- **Subtle data layer**: Faint grid lines or a few small data dots/nodes behind the waveform, like a quiet chart axis.
+- **Mood**: Minimal, dark, premium SaaS. Lots of negative space.
+- **Palette**: Matches the existing brand — deep navy/near-black background (oklch ≈ 0.18 0.04 265) with the brand blue→purple gradient (oklch 0.6 0.18 250 → 0.58 0.22 295) on the waveform and a soft glow.
+- **No people, no UI screenshots, no busy scenes, no logos.**
 
-### What changes
+## Steps
+1. Generate a new hero image with the Lovable AI Gateway (Nano Banana Pro for higher quality), prompt focused on:
+   - Minimal horizontal voice waveform / audio equalizer in glowing blue→purple gradient
+   - Dark navy background, subtle data grid in the distance
+   - Plenty of empty space, cinematic, premium SaaS aesthetic
+   - 16:9, no text, no faces, no clutter
+2. Save the result to `src/assets/hero.jpg` (replacing the current file). Existing import `import heroImg from "@/assets/hero.jpg"` keeps working — no code changes needed in `src/routes/index.tsx`.
+3. Keep the dark gradient overlay already in place so the headline stays readable while the waveform shows through softly.
+4. QA the new image (open it, verify it's minimal, on-theme, and looks good behind the headline at 1062px viewport).
 
-**`src/styles.css`** — rewrite the color tokens in `:root`:
-- `--background`: near-white (`oklch(0.99 0.005 250)`)
-- `--foreground`: deep slate (`oklch(0.２0 0.03 260)`)
-- `--card` / `--popover`: pure white with subtle tint
-- `--muted`: light gray (`oklch(0.96 0.01 255)`)
-- `--muted-foreground`: medium slate
-- `--border` / `--input`: soft dark at low opacity (`oklch(0.2 0.03 260 / 8%)`)
-- `--primary`: keep brand blue but slightly deeper for contrast on white
-- `--accent`: keep purple, tuned for white background
-- `--primary-foreground`: white (text on colored buttons)
+## Files affected
+- `src/assets/hero.jpg` — replaced
 
-**Body background** — replace dark radial gradients with soft light ones:
-- Light blue/purple radial tints at low opacity over white
-- Update `--gradient-hero`, `--gradient-card`, `--shadow-glow`, `--shadow-elegant` for light surfaces
-
-**`.glass` utility** — switch from translucent dark to translucent white:
-- `background: oklch(1 0 0 / 0.7)` with white border and subtle shadow
-
-**Components review** — spot-check that the following still read well on white and tweak any hardcoded dark classes if found:
-- `src/components/site-header.tsx` (header bg, nav links)
-- `src/components/site-footer.tsx`
-- `src/routes/index.tsx` (hero, tools grid, ask-anything panel, pricing comparison)
-- `src/routes/about.tsx`, `src/routes/contact.tsx`
-
-Most colors flow through CSS variables, so the token swap handles 90% automatically. Any leftover dark-only utility classes (e.g. `bg-slate-900`, `text-white`) get replaced with semantic tokens (`bg-background`, `text-foreground`).
-
-### What stays
-- Gradient brand accents, glow on CTAs, animations (`float`, `pulse-glow`)
-- Layout, typography (Inter + Space Grotesk), all content and routes
-- Hero image asset (still works on white with adjusted overlay opacity)
+No component, route, or style changes required.
