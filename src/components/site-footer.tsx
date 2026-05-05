@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Sparkles } from "lucide-react";
+import logo from "@/assets/cognosales-logo.png";
 
 export function SiteFooter() {
   return (
@@ -8,9 +8,7 @@ export function SiteFooter() {
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
             <Link to="/" className="flex items-center gap-2">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-brand">
-                <Sparkles className="h-4 w-4 text-brand-foreground" />
-              </span>
+              <img src={logo} alt="CognoSales logo" className="h-8 w-8 object-contain" />
               <span className="font-display text-base font-semibold">
                 Cogno<span className="text-gradient">Sales</span>
               </span>
