@@ -1,24 +1,79 @@
+
 ## Goal
-Replace the current busy hero image on the homepage with a minimal, on-brand visual that primarily represents **Voice AI**, with subtle nods to **data** and **SaaS**.
+Make the contact form on `/contact` actually save submissions and notify you by email, in a way that runs identically on Lovable preview AND on Railway.
 
-## Visual direction
-- **Subject**: A single, centered abstract voice waveform (sound wave / equalizer bars) — the universal signal of voice AI.
-- **Subtle data layer**: Faint grid lines or a few small data dots/nodes behind the waveform, like a quiet chart axis.
-- **Mood**: Minimal, dark, premium SaaS. Lots of negative space.
-- **Palette**: Matches the existing brand — deep navy/near-black background (oklch ≈ 0.18 0.04 265) with the brand blue→purple gradient (oklch 0.6 0.18 250 → 0.58 0.22 295) on the waveform and a soft glow.
-- **No people, no UI screenshots, no busy scenes, no logos.**
+## Architecture
 
-## Steps
-1. Generate a new hero image with the Lovable AI Gateway (Nano Banana Pro for higher quality), prompt focused on:
-   - Minimal horizontal voice waveform / audio equalizer in glowing blue→purple gradient
-   - Dark navy background, subtle data grid in the distance
-   - Plenty of empty space, cinematic, premium SaaS aesthetic
-   - 16:9, no text, no faces, no clutter
-2. Save the result to `src/assets/hero.jpg` (replacing the current file). Existing import `import heroImg from "@/assets/hero.jpg"` keeps working — no code changes needed in `src/routes/index.tsx`.
-3. Keep the dark gradient overlay already in place so the headline stays readable while the waveform shows through softly.
-4. QA the new image (open it, verify it's minimal, on-theme, and looks good behind the headline at 1062px viewport).
+```text
+[Contact form on /contact]
+         |
+         v
+[TanStack server function: submitContact]
+         |
+         +--> Supabase (Postgres) --> contact_submissions table
+         |
+         +--> Resend API ----------> email to hello@cognosales.com
+```
+
+No queues, no cron, no Lovable-specific runtime dependencies. Works on any host that runs Node/Workers.
+
+## Step 1 — Enable Lovable Cloud
+Provisions a Supabase project automatically. Auto-generates `@/integrations/supabase/client` and `client.server`. Gives you env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL`.
+
+## Step 2 — Create the database table
+Migration creates `public.contact_submissions`:
+- `id uuid pk default gen_random_uuid()`
+- `name text not null`
+- `email text not null`
+- `company text`
+- `message text not null`
+- `created_at timestamptz default now()`
+
+RLS enabled. Policies:
+- Public `INSERT` allowed (anyone can submit the form)
+- No `SELECT` policy → only the service role (you, via dashboard) can read submissions. Prevents data leaks.
+
+## Step 3 — Add Resend
+- Ask you for your `RESEND_API_KEY` and store it as a Lovable secret
+- Use the `onboarding@resend.dev` sender initially (no DNS needed) — you can switch to `noreply@cognosales.com` later by verifying your domain in Resend
+- Email goes to `hello@cognosales.com` with subject like "New CognoSales contact: <name>"
+
+## Step 4 — Server function
+Create `src/server/contact.functions.ts` exporting `submitContact`:
+- Zod-validates input (name 1–100, email valid + max 255, company max 100, message 1–2000)
+- Inserts into `contact_submissions` via `supabaseAdmin`
+- Calls Resend `POST /emails` with the submission details
+- Returns `{ ok: true }` on success, throws on validation failure
+- Email send is non-blocking for the user — if Resend fails, the row is still saved and the user sees success (we log the email error server-side)
+
+## Step 5 — Wire up the form
+Update `src/routes/contact.tsx`:
+- Replace the fake `setTimeout` with a real call to `submitContact` via `useServerFn`
+- Add `name="..."` attributes on each input so we can read FormData
+- Keep the existing toast UX
+- Disable button + show "Sending…" during submit
+- On error, show `toast.error` with a friendly message
+
+## Step 6 — Railway deployment guide (in chat, no code)
+After everything works in Lovable, I'll give you the exact list of env vars to paste into Railway:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_API_KEY`
+
+Plus: confirm Railway's build command is `bun run build` and start command is correct for TanStack Start (Node adapter — note Railway runs Node, not Cloudflare Workers, so we'll verify the build target works there).
 
 ## Files affected
-- `src/assets/hero.jpg` — replaced
+- `src/routes/contact.tsx` — wire form to server function
+- `src/server/contact.functions.ts` — new (server function)
+- `src/server/contact.server.ts` — new (Resend send helper)
+- New DB migration for `contact_submissions` table + RLS
 
-No component, route, or style changes required.
+## What you need to do
+1. Approve this plan
+2. Sign up at resend.com (free), grab an API key from their dashboard, paste it when I ask
+3. Later: verify cognosales.com in Resend if you want emails from your own domain
+
+## Open question
+You mentioned hosting on Railway specifically. Heads up: this project is currently configured for Cloudflare Workers (`wrangler.jsonc`). TanStack Start can target Node for Railway, but it's a small config change. I'll handle that if/when you're ready to deploy — just flagging it so it's not a surprise.
