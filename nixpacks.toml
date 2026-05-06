@@ -5,19 +5,7 @@ nixPkgs = ["bun", "nodejs_20"]
 cmds = ["bun install"]
  
 [phases.build]
-cmds = [
-  "bun run build",
-  "echo '=== Checking for .output/ ==='",
-  "ls -la .output/ 2>/dev/null || echo '.output/ does not exist'",
-  "echo '=== Checking for .output/server/ ==='",
-  "ls -la .output/server/ 2>/dev/null || echo '.output/server/ does not exist'",
-  "echo '=== Checking for dist/ ==='",
-  "ls -la dist/ 2>/dev/null || echo 'dist/ does not exist'",
-  "echo '=== Checking for dist/server/ ==='",
-  "ls -la dist/server/ 2>/dev/null || echo 'dist/server/ does not exist'",
-  "echo '=== Finding all index files ==='",
-  "find . -maxdepth 4 -name 'index.*' -type f | grep -v node_modules | head -20 || echo 'No index files found'"
-]
+cmds = ["bun run build"]
  
 [start]
-cmd = "node .output/server/index.mjs"
+cmd = "node dist/server/server.js"
