@@ -1,12 +1,6 @@
-# Railway / Nixpacks build config — uses Bun for install + build, Node to run.
-[phases.setup]
-nixPkgs = ["bun", "nodejs_20"]
-
-[phases.install]
-cmds = ["bun install"]
-
-[phases.build]
-cmds = ["bun run build"]
-
-[start]
-cmd = "node dist/server/index.js"
+import { createStartHandler } from '@tanstack/react-start/server'
+import { getRouterManifest } from '@tanstack/react-start/router-manifest'
+ 
+export default createStartHandler({
+  getRouterManifest,
+})
