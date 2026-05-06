@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { submitContact } from "@/server/contact.functions";
+import { submitContact } from "@/lib/contact.functions.server";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
