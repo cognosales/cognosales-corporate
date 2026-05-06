@@ -1,7 +1,10 @@
+
+Copy
+
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "HEROKU"
   },
   "deploy": {
     "startCommand": "node dist/server/server.js",
