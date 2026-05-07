@@ -10,11 +10,13 @@ export default defineConfig({
   vite: {
     server: {
       host: '0.0.0.0',
-      port: process.env.PORT || 8080,
-      allowedHosts: ['cognosales.com'],
+      port: Number(process.env.PORT) || 8080,
+      allowedHosts: 'all',
     },
     preview: {
-      allowedHosts: ['cognosales.com'],
+      host: '0.0.0.0',
+      port: Number(process.env.PORT) || 8080,
+      allowedHosts: 'all',
     },
   },
 })
