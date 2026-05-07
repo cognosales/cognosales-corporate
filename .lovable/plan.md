@@ -1,81 +1,82 @@
+## Why cognosales.com shows 404
 
-## Goal
-Make the app build and run on Railway (Node.js host) instead of Cloudflare Workers, without breaking the Lovable preview.
+The 404 isn't a routing bug in your app — Railway never successfully started your server, so the domain has nothing to serve. Your repo currently has **four conflicting deploy configs** all pointing to a file path that your build never produces.
 
-## Current state
-- `vite.config.ts` uses `@lovable.dev/vite-tanstack-config`, which targets Cloudflare Workers by default (the `cloudflare` plugin is included automatically).
-- `wrangler.jsonc` exists at the project root — Workers-specific config.
-- Server function (`submitContact`) and Supabase admin client both use `process.env.*`, which works on Node too — no code changes needed there.
+### The conflict map
 
-## What changes
+| File | Tells Railway to… | Problem |
+|---|---|---|
+| `Dockerfile` | Build with `npm`, run `node dist/server/index.js` | That path doesn't exist after build |
+| `railway.json` | Use **DOCKERFILE** builder, run `npm run start` | Forces Docker, **ignores nixpacks.toml** |
+| `nixpacks.toml` | Use Bun + Nixpacks, run `node dist/server/index.js` | Ignored; also wrong path |
+| `package.json` `"start"` | `node dist/server/index.js` | Wrong path |
+| `vite.config.ts` | TanStack Start `target: 'node-server'` | Outputs to **`.output/server/index.mjs`**, not `dist/...` |
 
-### 1. Switch Vite to the Node target
-Update `vite.config.ts` to disable the Cloudflare preset and enable the Node SSR target for TanStack Start:
+So every deploy either:
+- builds with Docker → can't find `dist/server/index.js` → container exits → 404 on the domain, OR
+- never reaches Nixpacks at all because `railway.json` overrides it.
 
-```ts
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+### Bonus issues spotted
 
-export default defineConfig({
-  target: "node", // build for Node.js instead of Cloudflare Workers
-});
+- Two lockfiles (`bun.lock` + Dockerfile uses `npm install`) → inconsistent installs.
+- `@cloudflare/vite-plugin` still in `dependencies` (leftover from Cloudflare attempt).
+- `wrangler.jsonc` may still exist (Cloudflare-only, harmless but misleading).
+- `vite.config.ts` `server.port` is a **dev-server** option — production reads `PORT` itself, fine to leave but doesn't help prod.
+
+---
+
+## The fix — one clean Nixpacks + Bun pipeline
+
+### 1. Replace `railway.json`
+```json
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": { "builder": "NIXPACKS" },
+  "deploy": {
+    "startCommand": "node .output/server/index.mjs",
+    "restartPolicyType": "ON_FAILURE"
+  }
+}
 ```
 
-(If the preset doesn't expose a `target` option, fall back to passing `vite: { ... }` overrides that set TanStack Start's `target: 'node-server'` and remove the cloudflare plugin.)
+### 2. Replace `nixpacks.toml`
+```toml
+[phases.setup]
+nixPkgs = ["bun", "nodejs_20"]
 
-### 2. Remove `wrangler.jsonc`
-Delete the file — it's only read by Cloudflare's tooling and is misleading on a Node deploy.
+[phases.install]
+cmds = ["bun install"]
 
-### 3. Add Railway config files
-Create two small files at the project root:
+[phases.build]
+cmds = ["bun run build"]
+```
+(Drop the `[start]` block — `railway.json` owns start.)
 
-- **`railway.json`** — tells Railway how to build/start:
-  ```json
-  {
-    "$schema": "https://railway.app/railway.schema.json",
-    "build": { "builder": "NIXPACKS" },
-    "deploy": {
-      "startCommand": "node .output/server/index.mjs",
-      "restartPolicyType": "ON_FAILURE"
-    }
-  }
-  ```
+### 3. Update `package.json`
+Change `"start": "node dist/server/index.js"` → `"start": "node .output/server/index.mjs"`
 
-- **`nixpacks.toml`** — pins Bun for the install/build steps:
-  ```toml
-  [phases.setup]
-  nixPkgs = ["bun", "nodejs_20"]
+### 4. Delete these files
+- `Dockerfile` (conflicting builder)
+- `wrangler.jsonc` (if present — Cloudflare-only)
 
-  [phases.install]
-  cmds = ["bun install"]
+### 5. Optional cleanup
+- `bun remove @cloudflare/vite-plugin` (no longer used)
 
-  [phases.build]
-  cmds = ["bun run build"]
-  ```
+### 6. Verify Railway env vars
+In your Railway service → **Variables**, all five must be set:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_API_KEY`
 
-### 4. Verify the build output path
-After switching to the Node target, TanStack Start writes the server bundle to `.output/server/index.mjs` (standard Nitro/Node output). The `startCommand` above matches that.
+### 7. Verify the domain
+After the deploy goes green and the Railway-generated URL works, in Railway → Settings → **Networking** → make sure `cognosales.com` is added as a Custom Domain and the DNS CNAME at your registrar points to the Railway target host. The 404 will keep happening until both the deploy is healthy AND the domain is bound to this service.
 
-### 5. No code changes needed
-- `src/server/contact.functions.ts` already reads `process.env.RESEND_API_KEY` inside the handler ✅
-- `src/integrations/supabase/client.server.ts` already reads `process.env.SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` inside the factory ✅
-- Form wiring on `/contact` is unchanged ✅
+---
 
-## Files affected
-- `vite.config.ts` — add `target: "node"`
-- `wrangler.jsonc` — delete
-- `railway.json` — new
-- `nixpacks.toml` — new
+## Why this works
 
-## After this is done — your Railway deploy steps
-1. Push to GitHub via Lovable → Connectors → GitHub → Connect project
-2. In Railway: New Project → Deploy from GitHub repo → pick the repo
-3. Variables tab → paste these 5:
-   - `VITE_SUPABASE_URL` = `https://nxohzmezamvsyyhepoki.supabase.co`
-   - `VITE_SUPABASE_PUBLISHABLE_KEY` = (the long key from `.env`)
-   - `SUPABASE_URL` = same as above
-   - `SUPABASE_SERVICE_ROLE_KEY` = copy from Lovable → Cloud → Settings → API keys
-   - `RESEND_API_KEY` = the Resend key you already added
-4. Railway auto-builds and gives you a URL. Test the contact form — submission should land in the database and email should arrive.
+TanStack Start with `target: 'node-server'` (your current `vite.config.ts`) produces a Nitro-style Node bundle at `.output/server/index.mjs`. Aligning the start command, package.json script, and build pipeline to that single path eliminates every "module not found" failure and lets Railway boot the server. Once the server boots, your custom domain stops returning 404.
 
-## Risk / open question
-The `@lovable.dev/vite-tanstack-config` preset wraps the Cloudflare plugin internally. If `target: "node"` isn't a supported option on that preset, I'll need to override the SSR target via the `vite` escape hatch. I'll verify the exact API when I open the preset's types during implementation, and pick whichever form works without ejecting from the Lovable preset.
+Want me to switch to build mode and apply this?
