@@ -4,7 +4,7 @@
     "builder": "RAILPACK"
   },
   "deploy": {
-    "startCommand": "node --trace-warnings --trace-uncaught dist/server/server.js",
+    "startCommand": "bash -c '\necho \"========== ENVIRONMENT CHECK ==========\"\necho \"PORT: $PORT\"\necho \"HOST: $HOST\"\necho \"NODE_ENV: $NODE_ENV\"\necho \"SUPABASE_URL: $SUPABASE_URL\"\necho \"SUPABASE_PUBLISHABLE_KEY length: ${#SUPABASE_PUBLISHABLE_KEY}\"\necho \"SUPABASE_SERVICE_ROLE_KEY length: ${#SUPABASE_SERVICE_ROLE_KEY}\"\necho \"RESEND_API_KEY length: ${#RESEND_API_KEY}\"\necho \"\"\necho \"========== FILE CHECK ==========\"\necho \"dist/server/server.js exists:\"\nls -lh dist/server/server.js\necho \"\"\necho \"========== NODE VERSION ==========\"\nnode --version\necho \"\"\necho \"========== STARTING SERVER ==========\"\necho \"Time: $(date)\"\necho \"Command: node dist/server/server.js\"\necho \"\"\nexec node dist/server/server.js\n'",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
   }
