@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "tanstack-start build",
+    "build:dev": "tanstack-start build",
     "start": "node .output/server/index.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
