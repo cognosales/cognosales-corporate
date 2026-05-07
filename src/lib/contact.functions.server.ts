@@ -48,8 +48,8 @@ export const submitContact = createServerFn({ method: "POST" })
             Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            from: "CognoSales Contact <cognosales@gmail.com>",
-            to: ["cognosales@gmail.com"],
+            from: "CognoSales Contact <hello@cognosales.com>",
+            to: ["hello@cognosales.com"],
             reply_to: data.email,
             subject: `New CognoSales contact: ${data.name}`,
             html,
