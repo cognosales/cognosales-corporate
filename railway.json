@@ -1,10 +1,13 @@
+
+Copy
+
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "RAILPACK"
   },
   "deploy": {
-    "startCommand": "node dist/server/server.js",
+    "startCommand": "echo '===== START DIAGNOSTICS =====' && echo 'PORT='$PORT && echo 'HOST='$HOST && echo 'NODE_ENV='$NODE_ENV && echo 'Current directory:' && pwd && echo 'Files in dist/:' && ls -la dist/ && echo 'Files in dist/server/:' && ls -la dist/server/ && echo 'Node version:' && node --version && echo 'Starting server...' && node dist/server/server.js",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
