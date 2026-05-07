@@ -6,6 +6,3 @@ cmds = ["bun install"]
  
 [phases.build]
 cmds = ["bun run build"]
- 
-[start]
-cmd = "node dist/server/server.js"

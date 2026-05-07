@@ -74,7 +74,7 @@ function ContactPage() {
               };
               setSubmitting(true);
               try {
-                await submit(payload);
+                await submit({ data: payload });
                 toast.success("Message sent! We'll be in touch shortly.");
                 form.reset();
               } catch (err) {

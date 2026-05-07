@@ -5,16 +5,16 @@ export default defineConfig({
 
   tanstackStart: {
     target: 'node-server',
-    entry: 'src/entry.server.ts',
   },
 
-  server: {
-    host: '0.0.0.0',
-    port: Number(process.env.PORT) || 3000,
-    allowedHosts: ['cognosales.com'],
-  },
-
-  preview: {
-    allowedHosts: ['cognosales.com'],
+  vite: {
+    server: {
+      host: '0.0.0.0',
+      port: Number(process.env.PORT) || 3000,
+      allowedHosts: ['cognosales.com'],
+    },
+    preview: {
+      allowedHosts: ['cognosales.com'],
+    },
   },
 })
