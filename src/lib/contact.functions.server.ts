@@ -49,7 +49,7 @@ export const submitContact = createServerFn({ method: "POST" })
           },
           body: JSON.stringify({
             from: "CognoSales Contact <onboarding@resend.dev>",
-            to: ["hello@cognosales.com"],
+            to: ["cognosales@gmail.com"],
             reply_to: data.email,
             subject: `New CognoSales contact: ${data.name}`,
             html,
